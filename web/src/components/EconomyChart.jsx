@@ -13,6 +13,16 @@ function fmtTime(s) {
   return `${m}:${sec.toString().padStart(2, '0')}`
 }
 
+// Parse "MM:SS" or return numeric value as-is
+function tsToS(val) {
+  if (typeof val === 'number') return val
+  if (typeof val === 'string' && val.includes(':')) {
+    const [m, s] = val.split(':').map(Number)
+    return m * 60 + s
+  }
+  return parseFloat(val) || 0
+}
+
 export default function EconomyChart({
   economyTimeline,
   uptimeEvents,
@@ -52,39 +62,42 @@ export default function EconomyChart({
     return playerIds.map(pid => {
       const points = economyTimeline[pid] || []
       const pts = points
-        .filter(pt => pt.time_s != null && pt.total_res != null)
-        .map(pt => `${xOf(pt.time_s)},${yOf(pt.total_res)}`)
+        .filter(pt => (pt.time_s != null || pt.time != null) && pt.total_res != null)
+        .map(pt => `${xOf(tsToS(pt.time_s ?? pt.time))},${yOf(pt.total_res)}`)
         .join(' ')
       return { pid, pts }
     })
   }, [economyTimeline, playerIds, durationS, maxRes])
 
-  // TC idle bands from coaching_data
+  // TC idle bands from coaching_data — data uses {start, end} MM:SS strings
   const idleBands = useMemo(() => {
-    if (!coachingData) return []
+    if (!coachingData || !focusId) return []
+    const cd = coachingData[String(focusId)] || coachingData
+    const tcIdle = cd.tc_idle_periods || []
     const bands = []
-    const tcIdle = coachingData.tc_idle_periods || []
     for (const period of tcIdle) {
-      const x1 = xOf(period.start_s || 0)
-      const x2 = xOf(period.end_s || 0)
+      const x1 = xOf(tsToS(period.start_s ?? period.start))
+      const x2 = xOf(tsToS(period.end_s ?? period.end))
       bands.push({ x: x1, w: Math.max(x2 - x1, 1) })
     }
     return bands
-  }, [coachingData, durationS])
+  }, [coachingData, focusId, durationS])
 
-  // Age-up events from uptimeEvents
+  // Age-up events — data uses {time: "MM:SS", age: "Age.FEUDAL_AGE", player: name}
   const ageUpLines = useMemo(() => {
     if (!uptimeEvents) return []
     const lines = []
     for (const ev of uptimeEvents) {
-      if (!ev.time_s) continue
-      const x = xOf(ev.time_s)
+      const t = ev.time_s ?? ev.time
+      if (t == null) continue
+      const x = xOf(tsToS(t))
+      const ageStr = (ev.age || ev.event || '').toLowerCase()
       let color = '#888'
-      const age = (ev.age || ev.event || '').toLowerCase()
-      if (age.includes('feudal')) color = '#c8a020'
-      else if (age.includes('castle')) color = '#8844cc'
-      else if (age.includes('imperial')) color = '#cc2222'
-      lines.push({ x, color, label: ev.age || ev.event || '', time_s: ev.time_s, pid: ev.player_id })
+      if (ageStr.includes('feudal'))   color = '#c8a020'
+      else if (ageStr.includes('castle'))   color = '#8844cc'
+      else if (ageStr.includes('imperial')) color = '#cc2222'
+      const label = (ev.age || '').replace('Age.', '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).split(' ')[0]
+      lines.push({ x, color, label, pid: ev.player })
     }
     return lines
   }, [uptimeEvents, durationS])

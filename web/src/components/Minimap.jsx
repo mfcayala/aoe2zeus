@@ -35,7 +35,7 @@ const PLAYER_COLORS = {
 }
 
 function getPlayerColor(colorId) {
-  return PLAYER_COLORS[colorId] ?? '#aaaaaa'
+  return PLAYER_COLORS[colorId] ?? PLAYER_COLORS[colorId % 8] ?? '#aaaaaa'
 }
 
 function hexToRgb(hex) {
