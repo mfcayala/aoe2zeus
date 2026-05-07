@@ -155,34 +155,26 @@ export default function Minimap({ data, currentTimeS, onTimeChange, durationS })
       ctx.fillRect(0, 0, w, h)
     }
 
-    // Resources
-    const resourceColors = {
-      gold:     '#f0d020',
-      stone:    '#aaaaaa',
-      tree:     '#1a4a10',
-      trees:    '#1a4a10',
-      forest:   '#1a4a10',
-      hunt:     '#c8a878',
-      deer:     '#c8a878',
-      boar:     '#e08020',
-      berries:  '#e060a0',
-      berry:    '#e060a0',
-      fish:     '#4888cc',
+    // Resources — sized to be clearly visible
+    const RES_STYLE = {
+      gold:    { color: '#f0d020', size: 5 },
+      stone:   { color: '#c8c8c8', size: 5 },
+      tree:    { color: '#1a5010', size: 2 },
+      hunt:    { color: '#c89858', size: 4 },
+      deer:    { color: '#c89858', size: 4 },
+      boar:    { color: '#e07018', size: 4 },
+      berries: { color: '#d04888', size: 4 },
+      fish:    { color: '#4888cc', size: 3 },
     }
 
     if (data.resources) {
       for (const res of data.resources) {
         const rx = res.x * w
         const ry = res.y * h
-        const resType = (res.type || '').toLowerCase()
-        let color = '#888'
-        let size = 2
-        for (const [key, val] of Object.entries(resourceColors)) {
-          if (resType.includes(key)) { color = val; break }
-        }
-        if (resType.includes('tree') || resType.includes('forest')) size = 1
-        ctx.fillStyle = color
-        ctx.fillRect(rx - size / 2, ry - size / 2, size, size)
+        const key = (res.type || '').toLowerCase()
+        const style = RES_STYLE[key] ?? { color: '#888', size: 3 }
+        ctx.fillStyle = style.color
+        ctx.fillRect(rx - style.size / 2, ry - style.size / 2, style.size, style.size)
       }
     }
 
@@ -192,45 +184,56 @@ export default function Minimap({ data, currentTimeS, onTimeChange, durationS })
       const color = getPlayerColor(pdata.color_id)
       const [cr, cg, cb] = hexToRgb(color)
 
-      // Activity trail (within last TRAIL_WINDOW_S of currentTimeS)
-      if (pdata.activity) {
-        for (const act of pdata.activity) {
-          if (!act.pos) continue
-          const ats = act.time_s ?? 0
-          const age = currentTimeS - ats
-          if (age < 0 || age > TRAIL_WINDOW_S) continue
-          const opacity = (1 - age / TRAIL_WINDOW_S) * 0.75
-          const ax = act.pos.x * w
-          const ay = act.pos.y * h
-          ctx.beginPath()
-          ctx.arc(ax, ay, 2, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(${cr},${cg},${cb},${opacity})`
-          ctx.fill()
+      // ── Connected movement trail ──────────────────────────────────────────
+      // Collect activity events in the trailing window, sorted oldest→newest
+      const trail = (pdata.activity || []).filter(a => {
+        if (!a.pos) return false
+        const age = currentTimeS - (a.time_s ?? 0)
+        return age >= 0 && age <= TRAIL_WINDOW_S
+      })
+
+      if (trail.length > 1) {
+        ctx.beginPath()
+        ctx.moveTo(trail[0].pos.x * w, trail[0].pos.y * h)
+        for (let i = 1; i < trail.length; i++) {
+          ctx.lineTo(trail[i].pos.x * w, trail[i].pos.y * h)
         }
+        ctx.strokeStyle = `rgba(${cr},${cg},${cb},0.75)`
+        ctx.lineWidth = 2
+        ctx.lineJoin = 'round'
+        ctx.stroke()
+
+        // Dot at the current head position (most recent event)
+        const head = trail[trail.length - 1]
+        ctx.beginPath()
+        ctx.arc(head.pos.x * w, head.pos.y * h, 4, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${cr},${cg},${cb},0.95)`
+        ctx.fill()
       }
 
-      // Buildings placed up to currentTimeS
+      // ── Buildings placed up to currentTimeS ───────────────────────────────
       if (pdata.buildings) {
         for (const bld of pdata.buildings) {
-          if (!bld.pos) continue
-          if ((bld.time_s ?? 0) > currentTimeS) continue
+          if (!bld.pos || (bld.time_s ?? 0) > currentTimeS) continue
           const bx = bld.pos.x * w
           const by = bld.pos.y * h
-          ctx.fillStyle = `rgba(${cr},${cg},${cb},0.8)`
-          ctx.fillRect(bx - 2, by - 2, 4, 4)
+          ctx.fillStyle = `rgba(${cr},${cg},${cb},0.85)`
+          ctx.fillRect(bx - 3, by - 3, 6, 6)
         }
       }
 
-      // TC marker — always visible
+      // ── TC marker — always visible, prominent ─────────────────────────────
       if (pdata.tc) {
         const tx = pdata.tc.x * w
         const ty = pdata.tc.y * h
-        // White border
-        ctx.fillStyle = 'rgba(255,255,255,0.9)'
-        ctx.fillRect(tx - 4, ty - 4, 8, 8)
-        // Player color fill
+        ctx.fillStyle = 'rgba(255,255,255,0.95)'
+        ctx.fillRect(tx - 6, ty - 6, 12, 12)
         ctx.fillStyle = color
-        ctx.fillRect(tx - 3, ty - 3, 6, 6)
+        ctx.fillRect(tx - 5, ty - 5, 10, 10)
+        // White cross
+        ctx.fillStyle = 'rgba(255,255,255,0.8)'
+        ctx.fillRect(tx - 1, ty - 5, 2, 10)
+        ctx.fillRect(tx - 5, ty - 1, 10, 2)
       }
     }
   }, [data, currentTimeS, dim, SCALE])
