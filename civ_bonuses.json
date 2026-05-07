@@ -1,0 +1,852 @@
+{
+  "_meta": {
+    "warning": "STALE DATA RISK: AoE2 DE is actively patched. Unit stats, civ bonuses, and tech availability change with every major update. Always verify against the current game version or patch notes before trusting specific numbers.",
+    "last_verified_patch": "AoE2 DE build v101.103.39862 (April 2026)",
+    "source": "Handcrafted from community knowledge + SiegeEngineers aoe2techtree. Not extracted directly from .dat file.",
+    "civ_id_note": "mgz civ_id mapping: 1=Britons, 2=Franks, 3=Goths, etc. civ_id=0 in save version 67.x may indicate Franks (off-by-one encoding change) — treat as uncertain if not confirmed by player.",
+    "arena_note": "Arena starts with pre-built stone walls. Both players start in a walled base. Standard Dark Age boom → Castle Age push is the meta."
+  },
+  "Franks": {
+    "style": "Cavalry boom. One of the best Castle Age civs due to cheaper Castles and high-HP Knights. Dominant eco from free farm upgrades.",
+    "bonuses": [
+      "Farm upgrades (Horse Collar, Heavy Plow, Crop Rotation) are FREE — huge food eco advantage",
+      "Cavalry have +20% HP (Knights survive longer, better in prolonged fights)",
+      "Castles cost 25% less stone (~488 instead of 650) — faster Castle drops and defense",
+      "Foragers work 15% faster — strong early food off berries"
+    ],
+    "unique_unit": "Throwing Axeman (infantry, bonus vs buildings)",
+    "unique_tech_castle": "Chivalry — Stables work 40% faster (mass Knights faster)",
+    "unique_tech_imperial": "Bearded Axe — Throwing Axeman +1 range",
+    "team_bonus": "Knights have +2 Line of Sight",
+    "missing_notable": ["Husbandry (cavalry slower than other cav civs)", "Ring Archer Armor", "Arbalester", "Hand Cannoneer", "Heresy"],
+    "arena_strategy": "Boom to Castle Age fast. Castles cost less stone so you can drop one earlier. Immediately produce Knights with Bloodlines + Forging. Free farm upgrades mean your food eco compounds strongly. Avoid committing to archers — Franks' archer line is mediocre.",
+    "vs_cumans_note": "Cumans will try to pressure with MAA + Battering Rams. Franks can afford a Castle earlier than most civs (stone discount). Aim to have your Castle up at ~18:00 and immediately start Knight production. If walls hold, your eco advantage compounds hard."
+  },
+  "Cumans": {
+    "style": "Fast Feudal aggression + second TC boom. Unique ability to field Battering Rams in Feudal Age. Transition to cavalry in Castle Age.",
+    "bonuses": [
+      "Can build a SECOND Town Center in Feudal Age (50% of normal stone cost) — enables economic snowball",
+      "Can build Siege Workshop in Feudal Age — ONLY civ that can field Battering Rams in Feudal/early Castle transition",
+      "Siege weapons move 10% faster per age tier (Feudal +10%, Castle +20%, Imperial +30%)",
+      "Palisade Walls have +50% HP in Feudal Age",
+      "Unique tech 'Nomads' allows the second Feudal TC even if researched later"
+    ],
+    "unique_unit": "Kipchak (cavalry archer, attacks multiple times per shot at higher levels)",
+    "unique_tech_castle": "Steppe Husbandry — Cavalry Archers and Steppe Lancers train 60% faster",
+    "unique_tech_imperial": "Cuman Mercenaries — allied players can train 10 free Kipchaks from their Castles",
+    "team_bonus": "Cavalry Archers have +1 attack in Feudal Age",
+    "missing_notable": ["Plate Barding Armor", "Plate Mail Armor", "Blast Furnace", "Arbalester"],
+    "arena_strategy": "Fast Feudal (~8:30 click) → Barracks in Dark Age → Militia spam → Man-at-Arms upgrade → Siege Workshop in Feudal → Battering Rams → break walls in Castle transition. Second TC in Feudal massively accelerates eco. Transition to Kipchaks + siege in Castle/Imperial.",
+    "vs_franks_note": "Franks have cheaper Castles and high-HP Knights which beat Cuman cavalry in head-to-head. Win condition is breaking through walls before Franks mass Knights. If Franks get 5+ Knights out, switch to siege support."
+  },
+  "Britons": {
+    "style": "Foot archer boom. Best late-game archers in the game. Strong on open maps; viable on Arena with tower/range-focused play.",
+    "bonuses": [
+      "Foot archers (except Skirmishers) have +1 range in Castle Age, +2 in Imperial",
+      "Town Centers cost 50% less wood from Castle Age onwards (easier to age and expand)",
+      "Shepherds work 25% faster",
+      "Archery Ranges are 20% cheaper from Feudal Age"
+    ],
+    "unique_unit": "Longbowman (foot archer, exceptional range)",
+    "unique_tech_castle": "Yeomen — Foot archers +1 range, Towers +2 attack",
+    "unique_tech_imperial": "Warwolf — Trebuchets do splash damage and 100% accuracy",
+    "team_bonus": "Archery Ranges work 20% faster",
+    "missing_notable": ["Hoardings", "Plate Barding Armor", "Hussar"],
+    "arena_strategy": "Boom to Castle, produce Crossbowmen/Arbalests + Longbowmen from multiple Archery Ranges. Yeomen gives exceptional range advantage. Cheaper TCs let you build a second TC quickly."
+  },
+  "Goths": {
+    "style": "Infantry flood. Extremely cheap infantry allows overwhelming numbers in Imperial Age. Weak walls and limited defensive options.",
+    "bonuses": [
+      "Infantry cost 35% less in Imperial Age (25% Feudal, 30% Castle — staggered)",
+      "Villagers +5 attack vs wild animals (safe luring)",
+      "+10 population headroom above cap in Imperial Age",
+      "Infantry creation speed +2.5 per age tier (very fast barracks)"
+    ],
+    "unique_unit": "Huskarl (infantry, high pierce armor — counters archers hard)",
+    "unique_tech_castle": "Anarchy — Huskarls can be made from Barracks",
+    "unique_tech_imperial": "Perfusion — Barracks work 100% faster",
+    "team_bonus": "Hunters carry +15 food",
+    "missing_notable": ["Plate Mail Armor", "Squires", "Arbalester", "Hoardings", "many cavalry upgrades"],
+    "arena_strategy": "Tough on Arena — Goths lack good walls and defensive tools. Try to boom and time an Imperial Age infantry flood. Huskarls from Barracks (Anarchy) are nearly immune to archer-tower defenses."
+  },
+  "Teutons": {
+    "style": "Defensive slow push. Strongest Paladins, conversion resistance, cheap farms, powerful Towers and Castles.",
+    "bonuses": [
+      "Towers garrison twice as many units and have double garrison arrows",
+      "Murder Holes free (Towers and Castles can attack at minimum range)",
+      "Farms cost 40% less",
+      "Monks +2 conversion resistance (harder to convert your units)",
+      "Town Center +2 attack in Castle Age, +2 more in Imperial"
+    ],
+    "unique_unit": "Teutonic Knight (very slow but highest melee attack + armor infantry)",
+    "unique_tech_castle": "Ironclad — Siege weapons +4 melee armor",
+    "unique_tech_imperial": "Crenellations — Castles +3 range, garrisoned infantry shoot arrows",
+    "team_bonus": "Monks have +1 healing range",
+    "missing_notable": ["Husbandry", "Light Cavalry", "Hussar", "Thumb Ring", "Bloodlines"],
+    "arena_strategy": "Very strong on Arena. Cheap farms + powerful towers = easy to defend. Boom to Imperial, spam Paladins. Crenellations turns your Castle into a devastating fixed defense."
+  },
+  "Japanese": {
+    "style": "Versatile infantry + navy. Very fast-working eco buildings. Strong on water and viable on land with infantry.",
+    "bonuses": [
+      "Mills, Lumber Camps, Mining Camps work 10%/15%/20% faster per age (massive eco speed)",
+      "Fishing Ships have 2x HP and +2 Pierce Armor and work faster",
+      "Trebuchets +2 accuracy",
+      "Infantry have +1/+2 attack in Castle/Imperial Age"
+    ],
+    "unique_unit": "Samurai (infantry, very fast attack, bonus vs unique units)",
+    "unique_tech_castle": "Yasama — Towers shoot extra arrows",
+    "unique_tech_imperial": "Kataparuto — Trebuchets fire and pack 3x faster",
+    "team_bonus": "Galleys have +50% LoS",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin", "Heresy"],
+    "arena_strategy": "Fast eco buildings help accelerate boom. Strong Castle/Imperial infantry + siege push. Samurai are useful if opponent spams unique units."
+  },
+  "Chinese": {
+    "style": "Eco powerhouse. Start with extra villagers (6) but less food. Very cheap tech upgrades per age. Versatile in Castle+.",
+    "bonuses": [
+      "Start with 6 villagers instead of 3 (but -150 food, -50 wood)",
+      "Technologies cost 15% less food/wood in Feudal, 15% less food in Castle, 15% food in Imperial",
+      "Town Center supports 10 population instead of 5",
+      "Demolition ships have +50% HP"
+    ],
+    "unique_unit": "Chu Ko Nu (crossbowman that fires multiple arrows per shot)",
+    "unique_tech_castle": "Great Wall — Stone Walls and Gates +30% HP",
+    "unique_tech_imperial": "Rocketry — Chu Ko Nu +2 attack, Scorpions +4 attack",
+    "team_bonus": "Farms +45 food",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin"],
+    "arena_strategy": "6 villager start means faster build-up but requires early food micro. Cheap techs help you age faster. Versatile — archers, siege, or infantry are all viable."
+  },
+  "Byzantines": {
+    "style": "Defensive counter-civ. Cheaper counter units, strong late-game with access to almost every tech. Good on closed maps.",
+    "bonuses": [
+      "Spearmen, Camels, Skirmishers cost 25% less (cheap counter units)",
+      "Buildings have +10%/16%/20%/25% HP per age",
+      "Fire Ships +20% attack",
+      "Advance to Imperial Age costs 33% less"
+    ],
+    "unique_unit": "Cataphract (cavalry, bonus vs infantry, immune to anti-cavalry bonus damage)",
+    "unique_tech_castle": "Greek Fire — Fire Ships +1 range",
+    "unique_tech_imperial": "Logistica — Cataphracts do trample damage and +6 attack vs infantry",
+    "team_bonus": "Monks +50% HP",
+    "missing_notable": ["Plate Mail Armor", "Bracer", "Bloodlines"],
+    "arena_strategy": "Very strong defensively. Cheap Skirmishers and Spearmen let you counter anything cheaply. Boom to Imperial and use your full tech tree access. Cataphracts are devastating vs infantry blobs."
+  },
+  "Persians": {
+    "style": "TC + Dock eco boom. Fastest villager and fishing boat production. War Elephants for late game. Strong Castle Age timing.",
+    "bonuses": [
+      "Town Centers and Docks work 10%/15%/20% faster per age",
+      "Start with +50 food and +50 wood",
+      "Knights have +2 attack vs archers (Cavalry Archers)",
+      "Town Centers and Docks have double HP"
+    ],
+    "unique_unit": "War Elephant (massive HP, high attack, slow)",
+    "unique_tech_castle": "Mahouts — War Elephants move 30% faster",
+    "unique_tech_imperial": "Kamandaran — Archers cost wood instead of gold",
+    "team_bonus": "Knights have +2 attack vs archers",
+    "missing_notable": ["Plate Barding Armor", "Heresy"],
+    "arena_strategy": "Fastest Feudal TC means fastest villager output early. Strong fast Castle timing. War Elephants are powerful but expensive — need a gold-heavy economy."
+  },
+  "Saracens": {
+    "style": "Stable gold eco + strong siege. Unique market that generates gold. Strong Camel and archer play.",
+    "bonuses": [
+      "Market transactions cost only 15% (instead of 30%) — very efficient gold trading",
+      "Transport Ships have 2x HP and 2x capacity",
+      "Archers (non-siege) have +3 attack vs buildings",
+      "Monks can garrison in Monasteries for protection"
+    ],
+    "unique_unit": "Mameluke (ranged cavalry, bonus vs cavalry)",
+    "unique_tech_castle": "Zealotry — Camels and Mamelukes +30 HP",
+    "unique_tech_imperial": "Counterweights — Trebuchets and Mangonels +15% accuracy",
+    "team_bonus": "Archers have +3 attack vs buildings",
+    "missing_notable": ["Plate Barding Armor", "Paladin"],
+    "arena_strategy": "Market efficiency lets you sell excess resources and buy needed ones cheaply. Strong Crossbow + Arbalest vs buildings. Camels counter Knights effectively."
+  },
+  "Turks": {
+    "style": "Gunpowder and gold mine. Free gold mining upgrades. All gunpowder units have +25% HP. Strong late-game only.",
+    "bonuses": [
+      "Gunpowder units have +25% HP",
+      "Gold Mining upgrades are free",
+      "Chemistry is free (skips the Feudal/Castle requirement)",
+      "Light Cavalry and Hussar upgrades are free"
+    ],
+    "unique_unit": "Janissary (Hand Cannoneer with higher HP and better stats)",
+    "unique_tech_castle": "Sipahi — Cavalry Archers +20 HP",
+    "unique_tech_imperial": "Artillery — Bombard Towers and Cannons have extra range",
+    "team_bonus": "Gunpowder units +25% HP",
+    "missing_notable": ["Arbalester", "Crossbow (no Crossbow upgrade!)", "Thumb Ring", "many eco upgrades", "Pikeman"],
+    "arena_strategy": "Weak early game — no Crossbow upgrade means very limited Feudal/early Castle options. Boom to Imperial for Janissaries and Bombard Cannons. Rely on Hussars as fast cheap mobile force."
+  },
+  "Vikings": {
+    "style": "Infantry eco. Free Wheelbarrow and Hand Cart saves significant food. Strong navy. Decent infantry in all ages.",
+    "bonuses": [
+      "Wheelbarrow and Hand Cart are free (saves ~500 food — huge eco acceleration)",
+      "Infantry have +10%/15%/20% HP per age (Castle/Imperial/+)",
+      "Warships cost 15% less",
+      "Berserkers self-heal over time"
+    ],
+    "unique_unit": "Berserk (infantry that slowly heals)",
+    "unique_tech_castle": "Chieftains — Infantry have +5 attack vs cavalry",
+    "unique_tech_imperial": "Bogsveigar — Archery Ranges produce 20% faster",
+    "team_bonus": "Docks cost -25%",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin", "Thumb Ring", "Bracer"],
+    "arena_strategy": "Free eco upgrades save ~500 food early — spend it on military earlier than normal. Viking infantry + siege push is reliable. Chieftains makes infantry counter Knights effectively."
+  },
+  "Mongols": {
+    "style": "Mobile siege and cavalry archers. Fastest siege destruction. Dominant open-map raiding civ.",
+    "bonuses": [
+      "Siege Weapons fire 25% faster (Mangonels, Scorpions, etc.) — devastating in mass",
+      "Cavalry Archers have +30% HP in Castle, +40% in Imperial",
+      "Hunters carry twice as much food",
+      "Scout Cavalry line has +2 Line of Sight"
+    ],
+    "unique_unit": "Mangudai (cavalry archer, bonus vs siege)",
+    "unique_tech_castle": "Nomads — Houses don't need to be rebuilt after destruction",
+    "unique_tech_imperial": "Drill — Siege Workshop units move 50% faster",
+    "team_bonus": "Siege Weapons have +1 LoS",
+    "missing_notable": ["Plate Barding Armor", "Blast Furnace", "many infantry upgrades"],
+    "arena_strategy": "Less dominant on Arena than open maps. Drill + fast siege can break walls quickly. Mangudai are expensive but nearly unkillable vs siege-heavy compositions."
+  },
+  "Celts": {
+    "style": "Fast infantry + aggressive siege. Strongest foot infantry speed. Siege fires fast. Unique Woad Raiders.",
+    "bonuses": [
+      "Infantry move 15% faster (fastest foot soldiers in the game)",
+      "Siege Weapons fire 25% faster",
+      "Lumberjacks work 15% faster (strong wood eco)",
+      "Enemy Monks convert Celt sheep less than 25% of the time"
+    ],
+    "unique_unit": "Woad Raider (fast heavy infantry)",
+    "unique_tech_castle": "Stronghold — Castles and Towers fire 20% faster",
+    "unique_tech_imperial": "Furor Celtica — Siege Workshop units +40% HP",
+    "team_bonus": "Siege Workshops work 20% faster",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin", "Thumb Ring", "Bracer"],
+    "arena_strategy": "Fast infantry can apply pressure quickly once through the wall. Siege + Woad Raiders is the signature push. Wood eco bonus helps pump Siege Workshops and Lumber Camp upgrades."
+  },
+  "Spanish": {
+    "style": "Missionary gold eco. Missionaries (mounted monks) are unique. Cannon Galleons and Conquistadors are powerful.",
+    "bonuses": [
+      "Blacksmith upgrades cost no gold (huge gold savings)",
+      "Builders work 30% faster (buildings complete much faster)",
+      "Cannon Galleons fire 15% faster and have improved ballistics",
+      "Trade units generate +33% more gold"
+    ],
+    "unique_unit": "Conquistador (mounted hand cannoneer) and Missionary (mounted monk)",
+    "unique_tech_castle": "Inquisition — Missionaries convert faster",
+    "unique_tech_imperial": "Supremacy — Villagers +15 attack, +40 HP, +8 armor (villager wars civ)",
+    "team_bonus": "Trade units +25% gold",
+    "missing_notable": ["Plate Mail Armor", "Plate Barding Armor", "Hussar", "Bracer"],
+    "arena_strategy": "Free Blacksmith upgrades = major military advantage for the same gold cost. Fast builders help you boom and place military buildings quickly. Conquistadors are devastating if you can reach Castle Age."
+  },
+  "Aztecs": {
+    "style": "Infantry + Monk rush. Garrisoned units generate gold. Eagle Warriors replace cavalry. Very strong eco with Atlatl.",
+    "bonuses": [
+      "Villagers carry +5 resources",
+      "Military units created 11% faster",
+      "Monks +5 HP per Monastery technology researched",
+      "Start with +50 gold",
+      "Garrisoned units generate 0.7 gold/min — passive income"
+    ],
+    "unique_unit": "Jaguar Warrior (infantry, massive bonus vs other infantry)",
+    "unique_tech_castle": "Atlatl — Skirmishers +1 attack, +1 range",
+    "unique_tech_imperial": "Garland Wars — Infantry +4 attack",
+    "team_bonus": "Relics generate +33% gold",
+    "missing_notable": ["All cavalry", "Bloodlines", "Husbandry"],
+    "arena_strategy": "No cavalry — Eagle Warriors fill that role (fast, bonus vs Monks). Monk rush is extremely powerful with high-HP Monks. Garrisoned TC generates passive gold early."
+  },
+  "Maya": {
+    "style": "Archer eco boom. Start resources last 15% longer. El Dorado Eagle Warriors are near-impossible to kill. Strong eco.",
+    "bonuses": [
+      "Starting resources last 15% longer (more from each gold mine, lumber, etc.)",
+      "Villagers cost -10%/-15%/-20% per age (much cheaper villagers in Castle+)",
+      "Eagle Warriors available (replaces cavalry)",
+      "Plumed Archers are strong mid-game archer unique unit"
+    ],
+    "unique_unit": "Plumed Archer (fast foot archer, good HP)",
+    "unique_tech_castle": "Obsidian Arrows — Archers +6 attack vs buildings",
+    "unique_tech_imperial": "El Dorado — Eagle Warriors +40 HP (nearly unkillable)",
+    "team_bonus": "Walls cost -50%",
+    "missing_notable": ["All cavalry", "Plate Mail Armor", "Blast Furnace"],
+    "arena_strategy": "Cheaper villagers let you maintain eco with less investment. Plumed Archers are fast and can raid effectively. El Dorado Eagles are devastating in Imperial."
+  },
+  "Huns": {
+    "style": "No need to build houses (saves wood + time). Best Cavalry Archer civ. Aggressive early game.",
+    "bonuses": [
+      "Do not need Houses — never hit population cap from house supply (massive early advantage)",
+      "Cavalry Archers cost -10%/-20% in Castle/Imperial",
+      "Trebuchets are +30% more accurate",
+      "Start with -100 wood (offset by not needing houses)"
+    ],
+    "unique_unit": "Tarkan (cavalry, bonus vs buildings, fires arrows)",
+    "unique_tech_castle": "Marauders — Tarkans created from Stables",
+    "unique_tech_imperial": "Atheism — Wonders and Relics victory require 100 more years; opponents' Monastery income -50%",
+    "team_bonus": "Stables work 20% faster",
+    "missing_notable": ["Plate Mail Armor", "many infantry upgrades", "Arbalester"],
+    "arena_strategy": "Never wasting food/wood on Houses is the key advantage — every resource goes directly to military or eco. Strong Castle Age cavalry archer spam. Tarkans shred walls and buildings."
+  },
+  "Koreans": {
+    "style": "Tower + Siege specialist. Strongest towers in the game. Excellent navy. Unique War Wagon cavalry archer.",
+    "bonuses": [
+      "Stone Miners work 20% faster",
+      "Towers have +2 range (Watch Towers have Guard Tower range)",
+      "Villagers reveal enemy Stealth Forests",
+      "Military buildings require 20% less stone",
+      "Siege Weapons have +1 range in Castle, +2 in Imperial"
+    ],
+    "unique_unit": "War Wagon (armored cavalry archer cart) and Turtle Ship",
+    "unique_tech_castle": "Eupseong — Watch Towers and Guard Towers have +2 range",
+    "unique_tech_imperial": "Shinkichon — Mangonels have +1 range",
+    "team_bonus": "Mangonels have +1 range",
+    "missing_notable": ["Plate Barding Armor", "Paladin", "Hussar", "Parthian Tactics"],
+    "arena_strategy": "Super strong on Arena — Stone Miners generate huge stone income for towers and Castles. Tower + Castle combo is near-impenetrable. Siege Weapons have exceptional range."
+  },
+  "Italians": {
+    "style": "Cheap age-ups and Docks. Genoese Crossbowmen counter cavalry. Condottieri counter gunpowder. Strong on water.",
+    "bonuses": [
+      "Advancing through ages costs 15% less food/gold",
+      "Dock technologies cost 50% less",
+      "Fishing Ships work 10% faster",
+      "Genoese Crossbowmen have bonus vs cavalry",
+      "Gunpowder units cost 15% less"
+    ],
+    "unique_unit": "Genoese Crossbowman (archer with bonus vs cavalry) and Condottiero (infantry, bonus vs gunpowder)",
+    "unique_tech_castle": "Pavise — Foot Archers +1/+1 armor",
+    "unique_tech_imperial": "Silk Road — Trade units cost 50% less",
+    "team_bonus": "Condottiero available from Barracks",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin"],
+    "arena_strategy": "Cheap age transitions mean you can commit more food/gold to villagers and military. Genoese Crossbowmen are strong vs Knight-heavy opponents."
+  },
+  "Hindustanis": {
+    "style": "Strongest Camel civ. Cheap Camel upgrades. Powerful gunpowder. Strong Elephant unique unit.",
+    "bonuses": [
+      "Camel units have +10 HP and +1/+1 armor — strongest Camels in game",
+      "Camel upgrades cost 50% less",
+      "Villagers have +1 attack per age vs buildings (good for breaking walls)",
+      "Gunpowder units cost 10% less"
+    ],
+    "unique_unit": "Camel Rider (stronger than standard camel) and Ghulam",
+    "unique_tech_castle": "Grand Trunk Road — All units generate gold with each kill",
+    "unique_tech_imperial": "Shatagni — Hand Cannoneers have +1 range",
+    "team_bonus": "Camel units have +4 attack vs buildings",
+    "missing_notable": ["Plate Barding Armor", "Paladin", "Hussar", "Bracer"],
+    "arena_strategy": "Camels are the answer to Knight-heavy civs. Grand Trunk Road turns a large army into a gold generator. Ghulam are effective vs archer masses."
+  },
+  "Incas": {
+    "style": "Defensive eco + unique buildings. Kamayuks (anti-cavalry infantry) and Slingers. Extra villager at start.",
+    "bonuses": [
+      "Start with a free Llama (bonus food animal)",
+      "Villagers +5 HP per Fortress technology (tougher villagers)",
+      "Farm upgrades cost 75% less",
+      "Walls and Towers built 50% faster",
+      "Unique buildings: Storehouse, Stronghold"
+    ],
+    "unique_unit": "Kamayuk (spearman with +1 range, strong vs cavalry) and Slinger (anti-infantry ranged)",
+    "unique_tech_castle": "Andean Sling — Slingers have no minimum range",
+    "unique_tech_imperial": "Couriers — Kamayuks and Slingers have +0/+2 armor",
+    "team_bonus": "Farms built 50% faster",
+    "missing_notable": ["All cavalry", "Plate Mail Armor"],
+    "arena_strategy": "Strong defensive eco with cheap farm upgrades. Kamayuks are powerful vs cavalry-heavy opponents. Build high walls fast (50% build speed bonus)."
+  },
+  "Magyars": {
+    "style": "Free Forging + Scout line. Strong cavalry scouts (free upgrades) and Cavalry Archer play.",
+    "bonuses": [
+      "Forging, Iron Casting, Blast Furnace are free (no gold cost for attack upgrades)",
+      "Scout Cavalry and Light Cavalry are free upgrades",
+      "Villagers can kill wolves immediately (no risk)",
+      "Magyar Huszar requires no gold"
+    ],
+    "unique_unit": "Magyar Huszar (fast cavalry, no gold cost, bonus vs siege)",
+    "unique_tech_castle": "Corvinian Army — Magyar Huszar has no gold cost",
+    "unique_tech_imperial": "Recurve Bow — Cavalry Archers +1 attack, +1 range",
+    "team_bonus": "Foot Archers cost -10%",
+    "missing_notable": ["Plate Mail Armor", "Plate Barding Armor", "many infantry techs"],
+    "arena_strategy": "Free attack upgrades (Forging etc.) save significant gold — invest it in more knights or cavalry archers. Magyar Huszar counters siege weapons for free."
+  },
+  "Slavs": {
+    "style": "Eco-friendly Siege + Boyar cavalry. Farms work faster. Strongarm Siege (Onagers/Mangonels) is devastating.",
+    "bonuses": [
+      "Farms generate food 10% faster",
+      "Military buildings cost 15% less wood",
+      "Supplies free (Militia line cost reduced — Militia don't cost gold to upgrade to Man-at-Arms)",
+      "Detinets unique building converts some unit production"
+    ],
+    "unique_unit": "Boyar (heavy cavalry, very high melee armor)",
+    "unique_tech_castle": "Druzhina — Infantry do trample damage",
+    "unique_tech_imperial": "Orthodoxy — Monks +3/+3 armor",
+    "team_bonus": "Siege Workshops work 20% faster",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Thumb Ring", "Bracer"],
+    "arena_strategy": "Faster farms + cheaper military buildings = strong eco + military balance. Druzhina infantry trample is powerful vs blob compositions. Team bonus Siege Workshops are very strong."
+  },
+  "Portuguese": {
+    "style": "Gold discount on all units. Fastest exploration. Feitoria generates all resources passively.",
+    "bonuses": [
+      "All units cost 15% less gold — major late-game sustainability",
+      "Ships have +10% HP",
+      "Researching technologies 25% faster",
+      "Unique building: Feitoria (generates food/wood/stone/gold passively)"
+    ],
+    "unique_unit": "Organgun (anti-infantry gunpowder) and Caravel",
+    "unique_tech_castle": "Carrack — Ships +1/+1 armor",
+    "unique_tech_imperial": "Arquebus — Gunpowder projectiles have improved ballistics",
+    "team_bonus": "Allies get notifications when enemy builds Wonders or Castles",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Arbalester", "Bracer"],
+    "arena_strategy": "15% gold discount on all units means your army is more cost-efficient. Feitoria can sustain a post-gold-mine economy. Tech speed bonus helps you age and upgrade faster."
+  },
+  "Ethiopians": {
+    "style": "Free unit upgrades when aging up. Strong Shotel Warriors (fast infantry) and Organ Guns.",
+    "bonuses": [
+      "Receive free Pikeman and Elite Skirmisher upgrades when advancing ages",
+      "+100 food and +100 gold when advancing ages",
+      "Towers and Outposts have +3 attack",
+      "Torsion Engines free (Onager splash damage upgrade)"
+    ],
+    "unique_unit": "Shotel Warrior (very fast infantry, high attack) and Royal Heirs variant",
+    "unique_tech_castle": "Royal Heirs — Shotel Warriors train nearly instantly",
+    "unique_tech_imperial": "Torsion Engines — Siege Weapons have larger blast area",
+    "team_bonus": "Towers and Outposts shoot 20% faster",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin", "Plate Mail Armor"],
+    "arena_strategy": "Free Pikeman + Skirmisher on aging means instant counter units. +100 food/gold per age helps maintain economy during transitions. Tower attack bonus synergizes with Arena's walled nature."
+  },
+  "Malians": {
+    "style": "Infantry attack bonus per age. Strong eco from Gbeto. Free Gold Mining upgrades.",
+    "bonuses": [
+      "Infantry have +1 attack per age starting in Feudal (up to +3 in Imperial)",
+      "Gold Mining upgrades are free",
+      "Buildings cost -15% stone",
+      "Gbeto (unique unit) is a powerful ranged infantry"
+    ],
+    "unique_unit": "Gbeto (female ranged infantry, fast, good damage) and Farimba",
+    "unique_tech_castle": "Tigui — Town Centers shoot arrows even without garrison",
+    "unique_tech_imperial": "Farimba — Cavalry have +5 attack",
+    "team_bonus": "Universities research technologies 80% faster",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin", "Bracer"],
+    "arena_strategy": "Free gold mining upgrades + stone discount on buildings help boom efficiently. Infantry +attack bonus makes even basic infantry dangerous in Imperial."
+  },
+  "Berbers": {
+    "style": "Camel and cavalry speed. Genitour (mounted skirmisher) unique. Cheap Stables.",
+    "bonuses": [
+      "Stables cost 25% less",
+      "Genitour available as allied unit",
+      "Cavalry move 10% faster in Castle, 15% in Imperial",
+      "Villagers cost 15% less from Castle Age"
+    ],
+    "unique_unit": "Camel Archer and Genitour",
+    "unique_tech_castle": "Kasbah — Buildings constructed 25% faster",
+    "unique_tech_imperial": "Maghrebi Camels — Camels regenerate HP",
+    "team_bonus": "Genitour available",
+    "missing_notable": ["Plate Barding Armor", "Paladin", "Bracer"],
+    "arena_strategy": "Cheap villagers from Castle Age help maintain eco while producing military. Fast cavalry is excellent for raiding once walls are breached. Kasbah speeds up building placement."
+  },
+  "Khmer": {
+    "style": "No building prerequisites — can skip straight to advanced units. Battle Elephants. Farms automatically reseed.",
+    "bonuses": [
+      "No building technology prerequisites — can build University without advancing, Siege Workshop without Barracks, etc.",
+      "Battle Elephants move 10% faster",
+      "Villagers can garrison in Houses",
+      "Scorpions fire 25% faster in Imperial"
+    ],
+    "unique_unit": "Ballista Elephant (mounted Scorpion) and Battle Elephant line",
+    "unique_tech_castle": "Tusk Swords — Battle Elephants +3 attack",
+    "unique_tech_imperial": "Double Crossbow — Ballista Elephants fire two projectiles",
+    "team_bonus": "Battle Elephants have +1/+1 armor",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Arbalester", "many cavalry upgrades"],
+    "arena_strategy": "No prerequisites means you can rush a Siege Workshop or University without the normal building chain — surprising on Arena. Battle Elephants are powerful but slow and expensive."
+  },
+  "Malay": {
+    "style": "Fast age-up + unique harbor. Cheapest Fishing Ships. Battle Elephants. Harbor generates free ships.",
+    "bonuses": [
+      "Advancing through ages costs 66% less food (massively cheaper age-ups)",
+      "Fishing Ships are 33% cheaper",
+      "Fish traps cost -33% wood",
+      "Battle Elephants are available (unique to Southeast Asian civs)"
+    ],
+    "unique_unit": "Karambit Warrior (cheapest unit in game — 25 food 15 wood)",
+    "unique_tech_castle": "Thalassocracy — Docks upgraded to Harbors (attack nearby enemies)",
+    "unique_tech_imperial": "Forced Levy — Militia line costs only food (no gold)",
+    "team_bonus": "Docks have +100% garrison capacity",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin", "Arbalester"],
+    "arena_strategy": "Age-ups costing 66% less food is game-changing — reach Castle Age much faster. Forced Levy Militia/Champions cost no gold — a nearly unlimited infantry supply."
+  },
+  "Burmese": {
+    "style": "Lumber eco + Infantry buff. Free Lumber Camp upgrades. Arambai (cavalry archer) is devastating.",
+    "bonuses": [
+      "Lumber Camp upgrades are free (big wood eco savings)",
+      "Monks reveal the position of all relics at the start",
+      "Infantry have +1/+2 attack in Castle/Imperial",
+      "Elephants cost -25%"
+    ],
+    "unique_unit": "Arambai (cavalry archer, very high damage, poor accuracy — devastating in mass)",
+    "unique_tech_castle": "Howdah — Battle Elephants +1/+1 armor",
+    "unique_tech_imperial": "Manipur Cavalry — Cavalry and Arambai +6 attack vs standard buildings",
+    "team_bonus": "Monasteries cost -50%",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Plate Mail Armor", "Arbalester", "Bracer"],
+    "arena_strategy": "Free lumber upgrades = strong wood eco from the start. Arambai mass is a potent Castle Age push. Monks revealing relics helps early relic control."
+  },
+  "Vietnamese": {
+    "style": "Defensive eco awareness + strong archers. Imperial Skirmisher. Rattan Archer is tough to kill.",
+    "bonuses": [
+      "Start with a free extra Villager",
+      "Enemy units visible on minimap at game start (full intelligence on opponent's position)",
+      "Imperial Skirmisher available",
+      "Each technology researched gives +10% HP to a random military unit type"
+    ],
+    "unique_unit": "Rattan Archer (foot archer with very high pierce armor)",
+    "unique_tech_castle": "Chatras — Battle Elephants +50 HP",
+    "unique_tech_imperial": "Paper Money — Generates periodic gold tributes to allies",
+    "team_bonus": "Imperial Skirmisher available",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin", "Bracer"],
+    "arena_strategy": "Seeing opponent's TC position at start is irrelevant on Arena (everyone knows where walls are), but extra villager helps eco. Rattan Archers are very hard to counter with archers or skirmishers."
+  },
+  "Bulgarians": {
+    "style": "Militia line is strongest in game. Blacksmith upgrades faster. Konnik cavalry unique unit.",
+    "bonuses": [
+      "Militia line upgrades (Man-at-Arms, Long Swordsman, etc.) cost 50% less food and are researched 50% faster",
+      "Blacksmith works 80% faster",
+      "Buildings cost -25% stone",
+      "Town Centers can research Feudal-age Kreposts (mini-Castles)"
+    ],
+    "unique_unit": "Konnik (cavalry that fights on as infantry when killed) and Stirrups unique tech",
+    "unique_tech_castle": "Stirrups — Cavalry attack 33% faster",
+    "unique_tech_imperial": "Bagains — Militia line +5 melee armor",
+    "team_bonus": "Cavalry attack 33% faster (from Stirrups being free for team in some patches — verify)",
+    "missing_notable": ["Plate Mail Armor", "Arbalester", "Bracer", "Thumb Ring"],
+    "arena_strategy": "Cheap, fast Militia upgrades mean very cost-efficient Man-at-Arms spam. Krepost provides a cheap defensive structure. Stirrups makes cavalry attacks extremely fast."
+  },
+  "Tatars": {
+    "style": "Cavalry Archer excellence. Flock bonuses. Unique Keshik earns gold. Sheep give extra food.",
+    "bonuses": [
+      "Sheep generate 50% more food",
+      "Cavalry Archers have +1 attack height bonus (fire from high ground more effectively)",
+      "Trebuchets have +50% splash damage radius",
+      "Elevation bonus for ranged units doubled"
+    ],
+    "unique_unit": "Keshik (cavalry that generates gold on each attack) and Flaming Camel",
+    "unique_tech_castle": "Silk Armor — Cavalry Archers and Steppe Lancers +1/+1 armor",
+    "unique_tech_imperial": "Timurid Siegecraft — Trebuchets and Mangonels have extra range",
+    "team_bonus": "Cavalry Archers have +2 LoS",
+    "missing_notable": ["Plate Mail Armor", "many infantry upgrades"],
+    "arena_strategy": "Extra food from sheep provides early eco boost. Keshik generates gold passively during combat — strong in prolonged fights. Timurid Siegecraft trebuchets have exceptional range for siege."
+  },
+  "Lithuanians": {
+    "style": "Cavalry buff from relics. Start with +150 food. Leitis (cavalry) ignores armor.",
+    "bonuses": [
+      "Start with +150 food (biggest food bonus in the game)",
+      "Each Relic garrisoned in a Monastery gives cavalry +1 attack (up to +4 with 4 relics)",
+      "Spearman line attacks 33% faster",
+      "Town Centers support 10 population"
+    ],
+    "unique_unit": "Leitis (cavalry, bonus attack ignores melee armor) and Winged Hussar",
+    "unique_tech_castle": "Hill Forts — Town Centers have +3 range",
+    "unique_tech_imperial": "Tower Shields — Spearman/Pikeman/Halberdier have +2 pierce armor",
+    "team_bonus": "Monasteries work 20% faster",
+    "missing_notable": ["Plate Mail Armor", "Bracer", "Arbalester"],
+    "arena_strategy": "+150 food start means you can click Feudal significantly faster. Relic hunting is critical — each relic gives +1 cavalry attack. Leitis ignoring melee armor makes them deadly vs well-armored Knights."
+  },
+  "Burgundians": {
+    "style": "Early eco upgrades available one age early. Unique Coustillier cavalry has charge attack.",
+    "bonuses": [
+      "Economic upgrades available one age earlier than normal (Horse Collar in Dark Age, Wheelbarrow in Feudal, etc.)",
+      "Cavalier upgrade available in Castle Age",
+      "Flemish Revolution (UT) converts all villagers to powerful militia-equivalent",
+      "Vineyards convert food to gold periodically"
+    ],
+    "unique_unit": "Coustillier (cavalry with charge attack that deals massive burst damage)",
+    "unique_tech_castle": "Burgundian Vineyards — Mills generate food + gold",
+    "unique_tech_imperial": "Flemish Revolution — All Villagers become Flemish Militia",
+    "team_bonus": "Paladins cost 40 less gold",
+    "missing_notable": ["Plate Mail Armor", "many infantry and archer upgrades"],
+    "arena_strategy": "Eco upgrades one age early is a massive advantage — get Wheelbarrow in Dark Age, Heavy Plow in Feudal. Coustillier charge attack deals devastating burst damage against clustered units."
+  },
+  "Sicilians": {
+    "style": "Defensive Castle Age. Donjon unique building. Serjeants defend Castles. Farm discount on first farms.",
+    "bonuses": [
+      "First 5 buildings of each type cost -100% stone",
+      "Castles and Towers can garrison twice as many units",
+      "Units resist half the damage from first arrow volley (First Crusade tech)",
+      "Farm upgrades (food cost) are free starting in Castle Age"
+    ],
+    "unique_unit": "Serjeant (infantry that can build Donjons) and Donjon (unique building)",
+    "unique_tech_castle": "First Crusade — Military units get +35 HP for a moment when created, Serjeants +3 attack",
+    "unique_tech_imperial": "Scutage — Each enemy unit killed generates gold",
+    "team_bonus": "Farms +100 food (on completion)",
+    "missing_notable": ["many late-game cavalry and archer upgrades", "Plate Mail Armor"],
+    "arena_strategy": "Free first-5-building stone cost means your first Castle, Watch Towers, and Donjons are nearly free. Strong defensive play. Serjeants can build Donjons inside enemy base."
+  },
+  "Poles": {
+    "style": "Stone generates gold. Folwark replaces Mill. Obuch (infantry) strips armor over time.",
+    "bonuses": [
+      "Stone Miners generate gold (stone mining generates 33% gold in addition to stone)",
+      "Folwark building collects 10% of nearby farm food automatically",
+      "Knights generate gold when killing units",
+      "Cavalry have +1 attack per age from Feudal"
+    ],
+    "unique_unit": "Obuch (infantry that permanently reduces target's melee armor each hit) and Winged Hussar",
+    "unique_tech_castle": "Szlachta Privileges — Knight line costs 60% less gold",
+    "unique_tech_imperial": "Lechitic Legacy — Obuch do trample damage",
+    "team_bonus": "Skirmishers move 10% faster",
+    "missing_notable": ["Plate Barding Armor", "many archer upgrades", "Arbalester"],
+    "arena_strategy": "Stone mining generates gold passively — mine stone aggressively for both Castle-building and gold income. Obuch stripping armor makes them powerful vs well-armored opponents. Knight line costs almost no gold with Szlachta."
+  },
+  "Bohemians": {
+    "style": "University + Monk tech rush. Houfnice (upgraded Bombard Cannon). Strong gunpowder + monk synergy.",
+    "bonuses": [
+      "Mining Camp upgrades are free",
+      "Monks are 50% cheaper",
+      "Hand Cannoneers and Petards are available in Castle Age",
+      "Spearmen and Skirmishers cost -15% food/wood"
+    ],
+    "unique_unit": "Hussite Wagon (anti-ranged cover unit) and Houfnice",
+    "unique_tech_castle": "Wagenburg Tactics — Gunpowder units move 15% faster",
+    "unique_tech_imperial": "Hussite Reforms — Monks and Monastery technologies generate gold back",
+    "team_bonus": "Blacksmiths discount technologies for allies",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "Paladin", "many cavalry upgrades"],
+    "arena_strategy": "Cheap Monks + Hussite Reforms makes religious play extremely cost-efficient. Houfnice (upgraded Bombard Cannon) is one of the most powerful siege units. Hand Cannoneers in Castle Age is uniquely powerful."
+  },
+  "Dravidians": {
+    "style": "Wood discount on ships + unique Thirisadai. Urumi Swordsman (blade dancer). Elephant Archers.",
+    "bonuses": [
+      "Docks cost -50% wood",
+      "Ships have +25% HP",
+      "Barracks units have +3 attack vs buildings",
+      "Skirmisher line available without Archery Range"
+    ],
+    "unique_unit": "Urumi Swordsman (charge attack, damages multiple units) and Thirisadai (massive warship)",
+    "unique_tech_castle": "Medical Corps — Battle Elephants regenerate HP",
+    "unique_tech_imperial": "Wootz Steel — Infantry and Cavalry attacks ignore melee armor",
+    "team_bonus": "Fishermen carry +15 food, fishing ships +15% work rate",
+    "missing_notable": ["Plate Barding Armor", "Paladin", "Hussar"],
+    "arena_strategy": "Wootz Steel making attacks ignore melee armor is extraordinarily powerful in Imperial. Urumi Swordsman charge deals massive AoE damage to grouped units."
+  },
+  "Bengalis": {
+    "style": "Elephant-focused. Rathas (cavalry/ranged hybrid). Eco bonuses on Villager production.",
+    "bonuses": [
+      "Villagers generate gold when garrison+garrison in Town Center",
+      "Battle Elephants regenerate HP",
+      "Ships have +25% HP and Galleons move faster",
+      "Elephant units resist conversion (harder to monk-convert)"
+    ],
+    "unique_unit": "Ratha (switch between melee/ranged cavalry) and Elephant Archer",
+    "unique_tech_castle": "Paiks — Rathas and Elephant Archers attack 20% faster",
+    "unique_tech_imperial": "Mahayana — Villagers take up half population space",
+    "team_bonus": "Monks have +3 conversion resistance vs cavalry",
+    "missing_notable": ["Plate Barding Armor", "Hussar", "many archer upgrades"],
+    "arena_strategy": "Mahayana halving villager population cost effectively doubles your eco capacity. Rathas switching between melee and ranged makes them versatile. Elephant regeneration negates the normal weakness."
+  },
+  "Gurjaras": {
+    "style": "Camel + cavalry archer excellence. Unique food-generating mechanic. Shrivamsha Rider (dodge mechanic).",
+    "bonuses": [
+      "Camel Scouts available in Dark Age",
+      "Mill and Folwark generate food from nearby livestock",
+      "Camel units cost -25% food",
+      "Shrivamsha Riders have a dodge ability (absorb one hit)"
+    ],
+    "unique_unit": "Shrivamsha Rider (cavalry, dodge one projectile) and Chakram Thrower (melee ranged infantry)",
+    "unique_tech_castle": "Kshatriyas — Military units -25% food cost",
+    "unique_tech_imperial": "Frontier Guards — Camel Riders have +4 melee armor",
+    "team_bonus": "Camel Riders have +1 pierce armor",
+    "missing_notable": ["Plate Barding Armor", "Plate Mail Armor", "Arbalester", "Bracer"],
+    "arena_strategy": "Camel Scouts in Dark Age give excellent map control. Shrivamsha Riders are extremely effective in Castle Age hit-and-run — the dodge ability makes them very hard to counter with Mangonels."
+  },
+  "Romans": {
+    "style": "Legionary infantry rush. Centurion unique unit buffs nearby units. TC fires with garrison bonus.",
+    "bonuses": [
+      "Barracks technologies cost -25% and research 25% faster",
+      "Villagers and fishing boats carry +5",
+      "TC garrisoning units adds +3 attack for each soldier",
+      "Legionary available (stronger Militia line)"
+    ],
+    "unique_unit": "Legionary (Militia line variant with better stats) and Centurion (infantry general)",
+    "unique_tech_castle": "Ballistas — Centurions have a ranged attack",
+    "unique_tech_imperial": "Comitatenses — Champions have +8 HP",
+    "team_bonus": "Light Cavalry and Scout Cavalry have +10% HP",
+    "missing_notable": ["Plate Barding Armor", "Paladin", "Hussar", "Arbalester", "Bracer"],
+    "arena_strategy": "Cheap, fast Barracks techs + Legionaries make a very potent early infantry push. Centurion as a general unit buffing nearby infantry can turn large infantry masses into devastating forces."
+  },
+  "Armenians": {
+    "style": "Fortified building bonus. Composite Bowman (strong foot archer). Mounted units regenerate.",
+    "bonuses": [
+      "Buildings have +50% HP when fully garrisoned",
+      "Cavalry regenerate HP at 5 HP/min",
+      "Start with 2 free Villagers at a starting Outpost",
+      "Foot archers have +1 range"
+    ],
+    "unique_unit": "Composite Bowman (foot archer, longer range) and Warrior Priest",
+    "unique_tech_castle": "Cilician Fleet — Galleys move faster",
+    "unique_tech_imperial": "Fereters — Warrior Priests generate gold when converting",
+    "team_bonus": "Cavalry regenerate HP",
+    "missing_notable": ["Plate Barding Armor", "Plate Mail Armor", "many late-game cavalry"],
+    "arena_strategy": "Extra 2 villagers at a starting Outpost = strong early eco. Cavalry regenerating HP makes them excellent hit-and-run units. Fortified garrisons makes your Town Center nearly impregnable."
+  },
+  "Georgians": {
+    "style": "Hill/terrain bonus. Mule Cart (resource trickle building). Monaspa (cavalry general).",
+    "bonuses": [
+      "Units on higher elevation get more attack bonus (doubled elevation bonus)",
+      "Buildings on higher ground have increased HP",
+      "Mule Cart generates resources from Lumber Camps, Mines, etc.",
+      "Cavalry have +1/+2 attack vs archers in Castle/Imperial"
+    ],
+    "unique_unit": "Monaspa (cavalry with bonus vs archers) and Mule Cart",
+    "unique_tech_castle": "Aznauri Cavalry — Cavalry have higher damage bonus from elevation",
+    "unique_tech_imperial": "Svan Towers — Towers generate resources when attacking",
+    "team_bonus": "Farms generate +20 food",
+    "missing_notable": ["Plate Mail Armor", "Plate Barding Armor", "many ranged upgrades"],
+    "arena_strategy": "On Arena, the elevation bonus matters less than on hilly Arabia. Mule Cart passive income from resource camps is a unique economic tool. Monaspa directly counter archer-heavy opponents."
+  },
+  "Achaemenids": {
+    "style": "Large army discount. Immortals (regenerating infantry). Persian War Elephant.",
+    "bonuses": [
+      "Military units cost 10% less for each Military Age upgrade researched",
+      "Infantry and cavalry regenerate HP in Castle and Imperial Age",
+      "Apadana Wonder building generates allied Diplomats",
+      "Persian War Elephants available"
+    ],
+    "unique_unit": "Immortal (Militia-line infantry that regenerates HP) and War Elephant",
+    "unique_tech_castle": "Immortality — Immortals regenerate faster",
+    "unique_tech_imperial": "Pairidaeza — Farms generate extra food",
+    "team_bonus": "Docks have +25% HP",
+    "missing_notable": ["Verify against current patch — this is a newer civ"],
+    "arena_strategy": "Regenerating units means you can be more aggressive — wounded units can heal during breaks in combat. Cost discount on military compounds with multiple age upgrades."
+  },
+  "Athenians": {
+    "style": "Cheaper Triremes and fleet. Hoplite infantry. Academy building chain.",
+    "bonuses": [
+      "Hoplites have bonus vs cavalry",
+      "Ships cost -15% wood",
+      "Academy technologies apply to foot soldiers",
+      "Start with a free Hoplite"
+    ],
+    "unique_unit": "Hoplite (heavy spearman, bonus vs cavalry)",
+    "unique_tech_castle": "Phalanx — Hoplites +1/+2 armor",
+    "unique_tech_imperial": "Peripatetic Academy — Academy technologies research instantly",
+    "team_bonus": "Triremes have +10% HP",
+    "missing_notable": ["Verify against current patch — newer civ added in 2025-2026"],
+    "arena_strategy": "Hoplites counter cavalry directly. Academy chain provides military bonuses. Best as combined arms with a strong foot infantry + ranged comp."
+  },
+  "Spartans": {
+    "style": "Elite infantry civ. Spartiate unique unit. Strong melee + anti-cavalry focus.",
+    "bonuses": [
+      "Infantry have extra armor",
+      "Barracks produce units faster",
+      "Spartiates available (elite warrior unit)",
+      "Military technologies research faster"
+    ],
+    "unique_unit": "Spartiate (elite Hoplite equivalent)",
+    "unique_tech_castle": "Agoge — Barracks units train faster and cheaper",
+    "unique_tech_imperial": "Krypteia — Infantry deal bonus damage at night (if applicable)",
+    "team_bonus": "Barracks work faster",
+    "missing_notable": ["Verify against current patch — newer civ"],
+    "arena_strategy": "Fast barracks + elite infantry = rapid infantry push. Strong vs cavalry-heavy civs. Less effective against heavy archer compositions."
+  },
+  "Shu": {
+    "style": "Infantry and Crossbow hybrid. Rattan shields. Fast Castle timing.",
+    "bonuses": [
+      "Crossbows available earlier",
+      "Infantry have bonus vs siege",
+      "Heavy siege units available with bonuses",
+      "Eco bonuses based on dynasty progression"
+    ],
+    "unique_unit": "Rattan Shieldbearer",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["Data pending — newer civ added 2025-2026, verify all details"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Wu": {
+    "style": "Naval + crossbow excellence.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Wei": {
+    "style": "Heavy cavalry + infantry hybrid.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Jurchens": {
+    "style": "Cavalry + siege focus.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Khitans": {
+    "style": "Cavalry archer + siege.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Macedonians": {
+    "style": "Strong infantry + siege. Macedonian Phalanx.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Thracians": {
+    "style": "Cavalry raider.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Puru": {
+    "style": "Elephant + infantry.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Muisca": {
+    "style": "Eagle + ranged.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Mapuche": {
+    "style": "Anti-cavalry infantry.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  },
+  "Tupi": {
+    "style": "Rainforest/terrain guerrilla.",
+    "bonuses": ["Verify — newer civ"],
+    "unique_unit": "Verify",
+    "unique_tech_castle": "Verify",
+    "unique_tech_imperial": "Verify",
+    "team_bonus": "Verify",
+    "missing_notable": ["All details need verification against current patch"],
+    "arena_strategy": "Verify based on current patch notes."
+  }
+}

@@ -8,29 +8,39 @@ import sys
 import os
 import json
 import argparse
+from pathlib import Path
 from extract_game_data import extract
 
+_DATA_DIR = Path(__file__).parent
+_CIV_BONUSES_PATH = _DATA_DIR / "civ_bonuses.json"
 
-# Civ knowledge — brief notes relevant to matchup coaching
-CIV_NOTES = {
-    "Cumans": (
-        "Unique bonuses: Can build a second Town Center in Feudal Age (lets them boom fast), "
-        "siege moves 10%% faster, Steppe Lancers available. Historically strong aggressive Feudal + Castle push. "
-        "Key weakness: TC is exposed in Feudal (no stone walls start). "
-        "Standard strategy: Fast Feudal → Men-at-Arms or Scout rush while building second TC, transition to cavalry."
-    ),
-    "Britons": "Strong archers (Longbowmen), cheaper Archery Ranges in Castle, extra range on foot archers. Best vs. cavalry-heavy civs.",
-    "Franks": "Extra HP on cavalry, free Farm upgrades, faster Castles. Dominant Paladin civ. Strong vs. archer civs.",
-    "Mayans": "El Dorado Eagle Warriors, 15%% cheaper archers, extra resources at start. Strong archer eco. Good vs. cavalry.",
-    "Chinese": "Extra food at start, cheaper techs per age, archers + siege focus. Strong eco and late game.",
-    "Mongols": "Mangudai, faster siege, stronger cavalry archers. Aggressive mobile play.",
-    "Vikings": "Free wheelbarrow/hand cart, extra HP on infantry. Strong eco and infantry push.",
-    "Ethiopians": "Free Pikemen/Elite Skirmisher upgrades when aging up, archer bonus. Good defensive eco.",
-    "Malians": "Infantry +1 attack per age, faster building. Gbeto unique unit. Infantry rush civ.",
-    "Teutons": "Strongest Paladins/Teutonic Knights, farms cheaper, conversion resistance. Slow but powerful.",
-    "Aztecs": "Garrisoned units generate gold, military units +5 HP. Eagle Warriors. Strong eco+rush.",
-    "Persians": "TC and docks work faster, war elephants. Fast boom, strong Castle Age.",
-}
+def _load_civ_bonuses() -> dict:
+    if _CIV_BONUSES_PATH.exists():
+        with open(_CIV_BONUSES_PATH) as f:
+            data = json.load(f)
+        return {k: v for k, v in data.items() if not k.startswith("_")}
+    return {}
+
+CIV_BONUSES = _load_civ_bonuses()
+
+
+def _civ_context_block(civ_name: str) -> str:
+    """Return a compact civ summary for the prompt."""
+    if civ_name.startswith("civ_") or civ_name == "Unknown":
+        return "Unknown civilization — cannot provide matchup-specific advice."
+    data = CIV_BONUSES.get(civ_name)
+    if not data:
+        return f"{civ_name}: No data available in civ_bonuses.json — verify manually."
+    needs_verify = any("Verify" in str(v) for v in data.get("bonuses", []))
+    warn = " ⚠ DATA MAY BE STALE — verify bonuses against current patch." if needs_verify else ""
+    lines = [f"{civ_name}:{warn}", f"  Style: {data.get('style', '?')}"]
+    for b in data.get("bonuses", [])[:4]:
+        lines.append(f"  • {b}")
+    lines.append(f"  Unique unit: {data.get('unique_unit', '?')}")
+    lines.append(f"  Key missing techs: {', '.join(data.get('missing_notable', [])[:4]) or 'none noted'}")
+    if data.get("arena_strategy"):
+        lines.append(f"  Arena strategy: {data['arena_strategy']}")
+    return "\n".join(lines)
 
 
 def format_game_data_for_prompt(data: dict, focus_player_id: int) -> str:
@@ -42,13 +52,16 @@ def format_game_data_for_prompt(data: dict, focus_player_id: int) -> str:
     focus_cd = data["coaching_data"][str(focus_player_id)]
     opp_cd = data["coaching_data"][str(opponent_id)]
 
-    focus_civ = focus["civ"] if not str(focus["civ"]).startswith("civ_") else "Unknown (random pick)"
-    opp_civ = opponent["civ"] if not str(opponent["civ"]).startswith("civ_") else "Unknown (random pick)"
+    focus_civ = focus["civ"] if not str(focus["civ"]).startswith("civ_") else "Unknown"
+    opp_civ = opponent["civ"] if not str(opponent["civ"]).startswith("civ_") else "Unknown"
 
-    civ_context = ""
-    for civ in [focus_civ, opp_civ]:
-        if civ in CIV_NOTES:
-            civ_context += f"\n  {civ}: {CIV_NOTES[civ]}"
+    civ_context = (
+        _civ_context_block(focus_civ) + "\n\n" + _civ_context_block(opp_civ)
+    )
+    # Per-matchup note if available
+    focus_data = CIV_BONUSES.get(focus_civ, {})
+    opp_data = CIV_BONUSES.get(opp_civ, {})
+    matchup_note = focus_data.get(f"vs_{opp_civ.lower()}_note") or opp_data.get(f"vs_{focus_civ.lower()}_note", "")
 
     lines = []
     lines.append(f"=== GAME SUMMARY ===")
@@ -65,9 +78,12 @@ def format_game_data_for_prompt(data: dict, focus_player_id: int) -> str:
     lines.append(f"  Result: {'WIN' if opponent['winner'] else 'LOSS'}")
     lines.append(f"  eAPM: {opponent['eapm']}")
 
-    if civ_context:
-        lines.append(f"")
-        lines.append(f"CIV MATCHUP CONTEXT:{civ_context}")
+    lines.append(f"")
+    lines.append(f"=== CIV MATCHUP CONTEXT ===")
+    lines.append(f"⚠ Civ data may be stale — patch notes should be verified.")
+    lines.append(civ_context)
+    if matchup_note:
+        lines.append(f"Specific matchup note: {matchup_note}")
 
     lines.append(f"")
     lines.append(f"=== AGE-UP TIMELINE ===")
@@ -159,32 +175,32 @@ def format_game_data_for_prompt(data: dict, focus_player_id: int) -> str:
     return "\n".join(lines)
 
 
-COACHING_SYSTEM_PROMPT = """You are an expert Age of Empires II coaching assistant with deep knowledge of:
-- AoE2 DE mechanics, build orders, and civ-specific strategies
-- Macro economy fundamentals: TC idle time, villager allocation, resource priorities
-- Competitive meta at intermediate (800–1200 ELO) level
-- Map-specific strategies (Arena, Arabia, etc.)
+COACHING_SYSTEM_PROMPT = """You are an expert Age of Empires II Definitive Edition coaching assistant.
 
-You will receive structured data extracted from an AoE2 DE replay file. Your job is to produce a clear, actionable coaching report for the specified player.
+CRITICAL RULES — follow these exactly:
+1. Unit counters: Spearmen/Pikemen counter CAVALRY (horses) only — NOT infantry. Men-at-Arms (infantry) are countered by Crossbowmen/Arbalests (ranged kiting) or equal/superior numbers of your own MAA. Never suggest Spearmen vs. MAA.
+2. The civ data provided may be stale (game is actively patched). Flag any advice that depends on specific numbers (e.g., HP values, costs) as "verify against current patch."
+3. Use only the timestamps and events from the provided replay data — do not invent events.
+4. Arena-specific: both players start with pre-built stone walls. The map favors booming but Battering Rams can break walls if timed correctly.
 
-Structure your report as follows:
+You will receive structured replay data. Produce a coaching report with exactly these sections:
 
 ## The Decisive Moment
-Identify the single key moment or inflection point where the game was effectively decided. Be specific: name the timestamp, what happened, and why it was fatal.
+The single inflection point where the game was effectively decided. Exact timestamp, what happened, why it was fatal.
 
-## What You Should Have Done In That Moment
-Concrete, actionable advice for that specific situation. What units/buildings/techs should they have had ready? What decision would have changed the outcome?
+## What You Should Have Done At That Moment
+Concrete advice: specific units, buildings, or techs. What decision reverses the outcome.
 
-## What Led You There — Macro Strategy Gaps
-Walk through the earlier part of the game and identify the 3–5 most impactful macro mistakes (TC idle, wrong age-up timing, missing military production, misallocated villagers, missing key techs). Use timestamps from the data.
+## What Led You There — Macro Gaps
+3–5 macro mistakes in chronological order, each with timestamp from the data. TC idle, age-up timing, missing production, wrong tech priority.
 
-## Civ Matchup Exploitation
-Given the civs in play, explain what advantages the opponent had that they exploited, what advantages the focus player had that they DIDN'T exploit, and what the correct strategy for this matchup looks like on this map.
+## Civ Matchup — What You Left Exploited
+What advantages the opponent's civ had and used. What YOUR civ's advantages were that went unused. What the correct strategy for this matchup on this map looks like.
 
-## Top 3 Action Items for Next Game
-Three specific, measurable things the player should focus on in their next game. Make them concrete (e.g., "Queue a villager within 10 seconds of each one finishing" not "improve eco").
+## Top 3 Things To Fix Next Game
+Specific and measurable. Not "improve eco" — instead "queue a villager every 25 seconds; your TC should never sit idle more than 5 seconds."
 
-Be direct and specific. Use the timestamps from the data. Don't be vague. This player wants to improve."""
+Be direct. Use exact timestamps from the data. This player wants to improve, not be coddled."""
 
 
 def generate_coaching_report(game_data: dict, focus_player_id: int) -> str:

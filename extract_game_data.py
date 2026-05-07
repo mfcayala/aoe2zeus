@@ -91,16 +91,16 @@ def extract(replay_path: str) -> dict:
     gaia_map = {obj.instance_id: obj for obj in match.gaia}
 
     # ── Player info ───────────────────────────────────────────────────────────
+    # In save version 67.x the DE header stores civ_id=0 for Franks (off-by-one
+    # encoding change). The mgz dataset has no entry for key '0', so we get
+    # civ_name="civ_0". Map it to Franks until a proper fix is available.
+    _CIV_ID_OVERRIDES = {"civ_0": "Franks"}
+
     players = {}
     for p in match.players:
-        # resolve actual civ from player objects if civ_id=0 (random)
         civ_name = p.civilization
         if civ_name.startswith("civ_"):
-            # try to find from summary
-            for ps in players_summary:
-                if ps["number"] == p.number:
-                    civ_name = ps.get("civilization", civ_name)
-                    break
+            civ_name = _CIV_ID_OVERRIDES.get(civ_name, civ_name)
         players[p.number] = {
             "name": p.name,
             "civ": civ_name,
