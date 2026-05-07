@@ -1,6 +1,6 @@
 __pycache__/
-frontend/node_modules/
-frontend/dist/
-frontend/public/data.json
+web/node_modules/
+web/dist/
+web/public/data.json
 demo_report.html
 generate_demo.py

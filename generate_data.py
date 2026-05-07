@@ -96,7 +96,7 @@ if __name__ == "__main__":
     replay = sys.argv[1] if len(sys.argv) > 1 else str(_DEFAULT_REPLAY)
     data = build_json(replay)
 
-    out_dir = Path(__file__).parent / "frontend" / "public"
+    out_dir = Path(__file__).parent / "web" / "public"
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "data.json"
 
