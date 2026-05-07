@@ -1,6 +1,6 @@
 __pycache__/
 web/node_modules/
 web/dist/
-web/public/data.json
+# web/public/data.json  (committed — no backend yet)
 demo_report.html
 generate_demo.py
