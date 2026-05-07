@@ -162,6 +162,25 @@ export default function App() {
     return parseCoachingText(rawData.coaching)
   }, [rawData])
 
+  const game = rawData?.game || {}
+  const mapInfo = game.map || {}
+  const gamePlayers = game.players || {}
+  const durationS = minimapData?.duration_s ?? game.duration_s ?? 0
+  const uptimeEvents = game.uptime_events || []
+  const coachingData = game.coaching_data || {}
+  const economyTimeline = game.economy_timeline || {}
+
+  const focusId = getFocusPlayer(gamePlayers)
+
+  // Build player name map for EconomyChart — must be before any early return
+  const playerNames = useMemo(() => {
+    const names = {}
+    for (const [pid, pdata] of Object.entries(gamePlayers)) {
+      names[pid] = pdata.name || `Player ${pid}`
+    }
+    return names
+  }, [gamePlayers])
+
   if (loading) {
     return (
       <div className="loading-screen">
@@ -178,25 +197,6 @@ export default function App() {
       </div>
     )
   }
-
-  const game = rawData.game || {}
-  const mapInfo = game.map || {}
-  const gamePlayers = game.players || {}
-  const durationS = minimapData?.duration_s ?? game.duration_s ?? 0
-  const uptimeEvents = game.uptime_events || []
-  const coachingData = game.coaching_data || {}
-  const economyTimeline = game.economy_timeline || {}
-
-  const focusId = getFocusPlayer(gamePlayers)
-
-  // Build player name map for EconomyChart
-  const playerNames = useMemo(() => {
-    const names = {}
-    for (const [pid, pdata] of Object.entries(gamePlayers)) {
-      names[pid] = pdata.name || `Player ${pid}`
-    }
-    return names
-  }, [gamePlayers])
 
   // Map/duration display
   const mapName = mapInfo.name || 'Unknown Map'
