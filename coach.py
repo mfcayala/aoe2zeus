@@ -10,6 +10,7 @@ import json
 import argparse
 from pathlib import Path
 from extract_game_data import extract
+from extract_positions import extract_positions
 from report_html import generate_html_report
 
 _DATA_DIR = Path(__file__).parent
@@ -288,7 +289,15 @@ def main():
     # Write self-contained HTML report alongside the replay file
     replay_path = Path(args.replay)
     html_path = replay_path.with_suffix(".html")
-    html_content = generate_html_report(game_data, focus_player_id, report)
+
+    print("Extracting position data for minimap…")
+    try:
+        position_data = extract_positions(args.replay)
+    except Exception as exc:
+        print(f"Warning: minimap data unavailable ({exc})")
+        position_data = None
+
+    html_content = generate_html_report(game_data, focus_player_id, report, position_data)
     html_path.write_text(html_content, encoding="utf-8")
     print(f"\nHTML report saved: {html_path}")
 
