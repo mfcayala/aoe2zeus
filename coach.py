@@ -10,6 +10,7 @@ import json
 import argparse
 from pathlib import Path
 from extract_game_data import extract
+from report_html import generate_html_report
 
 _DATA_DIR = Path(__file__).parent
 _CIV_BONUSES_PATH = _DATA_DIR / "civ_bonuses.json"
@@ -283,6 +284,13 @@ def main():
 
     report = generate_coaching_report(game_data, focus_player_id)
     print(report)
+
+    # Write self-contained HTML report alongside the replay file
+    replay_path = Path(args.replay)
+    html_path = replay_path.with_suffix(".html")
+    html_content = generate_html_report(game_data, focus_player_id, report)
+    html_path.write_text(html_content, encoding="utf-8")
+    print(f"\nHTML report saved: {html_path}")
 
 
 if __name__ == "__main__":
