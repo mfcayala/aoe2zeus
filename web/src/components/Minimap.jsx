@@ -22,20 +22,30 @@ const TERRAIN_RGB = {
 }
 const DEFAULT_RGB = [60, 120, 30]
 
-// AoE2 player color palette indexed by color_id
-const PLAYER_COLORS = {
-  0: '#0050e0',
-  1: '#e01818',
-  2: '#18c818',
-  3: '#e0c818',
-  4: '#18d8d8',
-  5: '#8018c8',
-  6: '#e07818',
-  7: '#e07818',
-}
+// Exact AoE2 player color palette (matches reference minimap generator)
+const PLAYER_COLORS = ['#0000DD', '#ff0000', '#00ff00', '#ffff00', '#00ffff', '#ff00ff', '#E9E9E9', '#ff8201']
 
-function getPlayerColor(colorId) {
-  return PLAYER_COLORS[colorId] ?? PLAYER_COLORS[colorId % 8] ?? '#aaaaaa'
+// Resolve player color: use color_id if 0-7, else pick next unused from palette
+function resolveColors(players) {
+  const out = {}
+  const used = new Set()
+  // First pass: valid color_ids
+  for (const [pid, p] of Object.entries(players)) {
+    if (p.color_id >= 0 && p.color_id <= 7) {
+      out[pid] = PLAYER_COLORS[p.color_id]
+      used.add(p.color_id)
+    }
+  }
+  // Second pass: fallback — assign next unused palette entry
+  let next = 0
+  for (const [pid] of Object.entries(players)) {
+    if (!out[pid]) {
+      while (used.has(next)) next++
+      out[pid] = PLAYER_COLORS[next] ?? '#aaaaaa'
+      used.add(next++)
+    }
+  }
+  return out
 }
 
 function hexToRgb(hex) {
@@ -180,8 +190,9 @@ export default function Minimap({ data, currentTimeS, onTimeChange, durationS })
 
     // Player buildings and activity
     const players = data.players || {}
+    const colorMap = resolveColors(players)
     for (const [pid, pdata] of Object.entries(players)) {
-      const color = getPlayerColor(pdata.color_id)
+      const color = colorMap[pid]
       const [cr, cg, cb] = hexToRgb(color)
 
       // ── Connected movement trail ──────────────────────────────────────────
@@ -198,17 +209,21 @@ export default function Minimap({ data, currentTimeS, onTimeChange, durationS })
         for (let i = 1; i < trail.length; i++) {
           ctx.lineTo(trail[i].pos.x * w, trail[i].pos.y * h)
         }
-        ctx.strokeStyle = `rgba(${cr},${cg},${cb},0.75)`
-        ctx.lineWidth = 2
+        ctx.strokeStyle = `rgba(${cr},${cg},${cb},0.85)`
+        ctx.lineWidth = 3
         ctx.lineJoin = 'round'
+        ctx.lineCap = 'round'
         ctx.stroke()
 
         // Dot at the current head position (most recent event)
         const head = trail[trail.length - 1]
         ctx.beginPath()
-        ctx.arc(head.pos.x * w, head.pos.y * h, 4, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${cr},${cg},${cb},0.95)`
+        ctx.arc(head.pos.x * w, head.pos.y * h, 5, 0, Math.PI * 2)
+        ctx.fillStyle = color
         ctx.fill()
+        ctx.strokeStyle = 'rgba(255,255,255,0.6)'
+        ctx.lineWidth = 1.5
+        ctx.stroke()
       }
 
       // ── Buildings placed up to currentTimeS ───────────────────────────────
@@ -217,23 +232,31 @@ export default function Minimap({ data, currentTimeS, onTimeChange, durationS })
           if (!bld.pos || (bld.time_s ?? 0) > currentTimeS) continue
           const bx = bld.pos.x * w
           const by = bld.pos.y * h
-          ctx.fillStyle = `rgba(${cr},${cg},${cb},0.85)`
-          ctx.fillRect(bx - 3, by - 3, 6, 6)
+          ctx.fillStyle = `rgba(${cr},${cg},${cb},0.9)`
+          ctx.fillRect(bx - 4, by - 4, 8, 8)
         }
       }
 
-      // ── TC marker — always visible, prominent ─────────────────────────────
+      // ── TC marker: filled circle + outline ring (reference style) ────────
       if (pdata.tc) {
         const tx = pdata.tc.x * w
         const ty = pdata.tc.y * h
-        ctx.fillStyle = 'rgba(255,255,255,0.95)'
-        ctx.fillRect(tx - 6, ty - 6, 12, 12)
+        // Filled centre
+        ctx.beginPath()
+        ctx.arc(tx, ty, 6, 0, Math.PI * 2)
         ctx.fillStyle = color
-        ctx.fillRect(tx - 5, ty - 5, 10, 10)
-        // White cross
-        ctx.fillStyle = 'rgba(255,255,255,0.8)'
-        ctx.fillRect(tx - 1, ty - 5, 2, 10)
-        ctx.fillRect(tx - 5, ty - 1, 10, 2)
+        ctx.fill()
+        // Outer ring
+        ctx.beginPath()
+        ctx.arc(tx, ty, 11, 0, Math.PI * 2)
+        ctx.strokeStyle = color
+        ctx.lineWidth = 3
+        ctx.stroke()
+        // White dot at centre
+        ctx.beginPath()
+        ctx.arc(tx, ty, 2, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(255,255,255,0.9)'
+        ctx.fill()
       }
     }
   }, [data, currentTimeS, dim, SCALE])

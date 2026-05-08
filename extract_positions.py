@@ -231,6 +231,7 @@ def _classify_gaia_resources(gaia_objects, dimension: int) -> list[dict]:
 def _extract_player_positions(
     match,
     dimension: int,
+    summary_color_ids: dict[str, int] | None = None,
 ) -> dict[int, PlayerPositions]:
     """Parse all inputs and return per-player positional data."""
 
@@ -278,7 +279,11 @@ def _extract_player_positions(
         buildings.sort(key=lambda e: e.time_s)
         activity.sort(key=lambda e: e.time_s)
 
-        color_id = getattr(p, "color_id", None) or 0
+        # Prefer Summary color_id (0-7 guaranteed); fall back to parse_match value
+        color_id = (summary_color_ids or {}).get(p.name)
+        if color_id is None:
+            raw = getattr(p, "color_id", None)
+            color_id = raw if (raw is not None and 0 <= raw <= 7) else 0
 
         players[p.number] = PlayerPositions(
             number=p.number,
@@ -308,11 +313,20 @@ def extract_positions(replay_path: str) -> ReplayPositions:
     Returns:
         ReplayPositions instance with normalised coordinates.
     """
-    # Pass 1: Summary for map tiles and duration
+    # Pass 1: Summary for map tiles, duration, and reliable color_ids (0-7)
     with open(replay_path, "rb") as f:
         summary = Summary(f)
         duration_ms = summary.get_duration()
         map_layer = _build_map_layer(summary)
+        summary_color_ids: dict[str, int] = {}
+        try:
+            for sp in summary.get_players():
+                name = sp.get("name", "")
+                cid  = sp.get("color_id")
+                if name and cid is not None and 0 <= cid <= 7:
+                    summary_color_ids[name] = cid
+        except Exception:
+            pass
 
     duration_s = int(duration_ms / 1000)
     dim = map_layer.dimension
@@ -322,7 +336,7 @@ def extract_positions(replay_path: str) -> ReplayPositions:
         match = parse_match(f)
 
     map_layer.resources = _classify_gaia_resources(match.gaia, dim)
-    players = _extract_player_positions(match, dim)
+    players = _extract_player_positions(match, dim, summary_color_ids)
 
     return ReplayPositions(
         duration_s=duration_s,
