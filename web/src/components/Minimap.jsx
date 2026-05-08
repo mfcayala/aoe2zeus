@@ -195,33 +195,30 @@ export default function Minimap({ data, currentTimeS, onTimeChange, durationS })
       const color = colorMap[pid]
       const [cr, cg, cb] = hexToRgb(color)
 
-      // ── Connected movement trail ──────────────────────────────────────────
-      // Collect activity events in the trailing window, sorted oldest→newest
+      // ── Fading dot trail (no lines) ──────────────────────────────────────
       const trail = (pdata.activity || []).filter(a => {
         if (!a.pos) return false
         const age = currentTimeS - (a.time_s ?? 0)
         return age >= 0 && age <= TRAIL_WINDOW_S
       })
 
-      if (trail.length > 1) {
+      for (const pt of trail) {
+        const age = currentTimeS - (pt.time_s ?? 0)
+        const opacity = (1 - age / TRAIL_WINDOW_S) * 0.55
         ctx.beginPath()
-        ctx.moveTo(trail[0].pos.x * w, trail[0].pos.y * h)
-        for (let i = 1; i < trail.length; i++) {
-          ctx.lineTo(trail[i].pos.x * w, trail[i].pos.y * h)
-        }
-        ctx.strokeStyle = `rgba(${cr},${cg},${cb},0.85)`
-        ctx.lineWidth = 3
-        ctx.lineJoin = 'round'
-        ctx.lineCap = 'round'
-        ctx.stroke()
+        ctx.arc(pt.pos.x * w, pt.pos.y * h, 2.5, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${cr},${cg},${cb},${opacity})`
+        ctx.fill()
+      }
 
-        // Dot at the current head position (most recent event)
-        const head = trail[trail.length - 1]
+      // Current head — brightest dot
+      const head = trail[trail.length - 1]
+      if (head) {
         ctx.beginPath()
-        ctx.arc(head.pos.x * w, head.pos.y * h, 5, 0, Math.PI * 2)
+        ctx.arc(head.pos.x * w, head.pos.y * h, 4.5, 0, Math.PI * 2)
         ctx.fillStyle = color
         ctx.fill()
-        ctx.strokeStyle = 'rgba(255,255,255,0.6)'
+        ctx.strokeStyle = 'rgba(255,255,255,0.7)'
         ctx.lineWidth = 1.5
         ctx.stroke()
       }

@@ -15,17 +15,8 @@ function fmtDuration(s) {
   return `${m}:${sec.toString().padStart(2, '0')}`
 }
 
-// AoE2 player color palette by color_id
-const PLAYER_COLOR_HEX = {
-  0: '#0050e0',
-  1: '#e01818',
-  2: '#18c818',
-  3: '#e0c818',
-  4: '#18d8d8',
-  5: '#8018c8',
-  6: '#e07818',
-  7: '#e07818',
-}
+// Exact AoE2 palette — must match Minimap.jsx
+const PLAYER_COLOR_HEX = ['#0000DD', '#ff0000', '#00ff00', '#ffff00', '#00ffff', '#ff00ff', '#E9E9E9', '#ff8201']
 
 function getPlayerAccent(colorId) {
   return PLAYER_COLOR_HEX[colorId] ?? '#a07828'
@@ -225,7 +216,8 @@ export default function App() {
         <div className="player-row">
           {Object.entries(gamePlayers).map(([pid, pdata]) => {
             const isWinner = pdata.winner === true || pdata.winner === 1
-            const colorId = pdata.color_id ?? (pid === '1' ? 0 : 1)
+            // Use color_id from minimap data (guaranteed 0-7 via Summary API)
+            const colorId = minimapData?.players?.[pid]?.color_id ?? pdata.color_id ?? 0
             const accent = getPlayerAccent(colorId)
             return (
               <div

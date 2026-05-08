@@ -194,15 +194,14 @@ body {
 .minimap-frame {
   overflow: hidden;
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  /* width W, height = W * scaleY(0.7). Canvas display size = W / sqrt(2).
-     After rotate(45deg) scaleY(0.7) the canvas corners land exactly on the
-     four diamond tips, so the full map is visible. */
-  width: 440px;
-  height: 308px; /* 440 * 0.7 */
+  /* Symmetric diamond (no Y compression). canvas_display = frame / sqrt(2)
+     ensures canvas corners land on diamond tips and full map is visible. */
+  width: 400px;
+  height: 400px;
   flex-shrink: 0;
 }
 .minimap-canvas-wrap {
-  transform: rotate(45deg) scaleY(0.7);
+  transform: rotate(45deg);
   transform-origin: center center;
   width: 100%;
   height: 100%;
@@ -212,8 +211,8 @@ body {
 }
 .minimap-canvas-wrap canvas {
   display: block;
-  width: 311px;  /* 440 / sqrt(2) — scales the 480px canvas to fill the diamond */
-  height: 311px;
+  width: 283px;  /* 400 / sqrt(2) */
+  height: 283px;
   image-rendering: pixelated;
 }
 .minimap-controls {
